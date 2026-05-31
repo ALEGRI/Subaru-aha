@@ -10,22 +10,19 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Check file structure
-        run: ls -R  # Это покажет нам в логах, где лежат твои файлы
-
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Initialize Gradle
-        run: |
-          gradle wrapper --gradle-version 8.1.1
-          chmod +x gradlew
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: 8.1.1 # Фиксируем версию здесь
 
       - name: Build Debug APK
-        run: ./gradlew assembleDebug --stacktrace
+        run: gradle assembleDebug --stacktrace
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
